@@ -8,9 +8,9 @@ using namespace std::chrono;
 int main(){
 
 // Initialise sample
-int n = 1000000;
+int n = 1000;
 int i;
-
+int j;
 // Record starting time
     auto start =
     high_resolution_clock::now();
@@ -18,10 +18,12 @@ int i;
 
 // Code
 
-int sum = 0;
+int sum = 0;                        // 1
 for (i = 0; i < n; ++i) {
-    ++sum;                     
-}       
+    for (j = 0; j < i; ++j) {
+        ++sum;                  // 1
+    }                           // ((N * N-1) / 2) * 1 + 1
+}    
 
 // Record ending time
     auto stop =
@@ -36,7 +38,7 @@ for (i = 0; i < n; ++i) {
          << duration.count()
          << " microseconds";
 
-    return 0;
+    
 
 return 0;
 

@@ -8,8 +8,9 @@ using namespace std::chrono;
 int main(){
 
 // Initialise sample
-int n = 1000000;
+int n = 25;
 int i;
+int j;
 
 // Record starting time
     auto start =
@@ -18,10 +19,12 @@ int i;
 
 // Code
 
-int sum = 0;
+int sum = 0;                            // 1
 for (i = 0; i < n; ++i) {
-    ++sum;                     
-}       
+    for (j = 0; j < n * n; ++j) {
+        ++sum;                      // 1
+    }                               // N * N^2 * 1 + 1
+}  
 
 // Record ending time
     auto stop =
