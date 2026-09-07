@@ -5,7 +5,7 @@ bool MaxHeapImpl::isEmpty() const
     return data.empty()
 }
 
-int MaxHeapImpl::size() const
+int MaxHeapImpl::size()
 {
     return data.size();
 }
