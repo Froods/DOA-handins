@@ -17,20 +17,23 @@ class Stack {
 
 	~Stack() { delete[] array_; }
 
-	bool empty() { return counter_ == 0; }
-	Object top() { return array_[counter_ - 1] }
-	Object pop() { return array_; }
+	bool empty() { return counter_ == 0; };
+	Object top() { return array_[counter_ - 1] };
+	Object pop() {  Object topValue = array_[counter_ - 1];
+					array_[counter_ - 1] = Object();
+					counter_--;
+					return topValue; }
 
 	void push(const Object x) {
 		if (counter_ == capacity_) {				//Tjek om kapacitet er nået
 			int newCapacity = capacity_ * 2;		//Opret ny kapacitet
-			newArray_ = new Object[newCapacity];    //Nyt array med ny kapacitet
+			Object* newArray_ = new Object[newCapacity];    //Nyt array med ny kapacitet
 			for (int i = 0; i < capacity_; i++) {newArray_[i] = array_[i];}		//Kopier gamle værdier til nyt array
-			~Stack();				    //Slet gammelt array
+			delete[] array_;				    //Slet gammelt array
 			array_ = newArray_;		    //Ret pointer til nyt array
 			capacity_ = newCapacity;	//Opdater kapacitet
 		}
-		array_.[counter_] = x;	//Tilføjer element til array
+		array_[counter_] = x;	//Tilføjer element til array
 		counter_++;				//Inkrementer counter
 	}
 };
