@@ -1,4 +1,3 @@
-using namespace std;
 #include <iostream>
 #include "stack_class.h"
 
@@ -9,12 +8,14 @@ int main(int argc, char *argv[]) {
 	stack->push(3);
 	stack->push(7);
 
-	cout << "Top element:    " << stack->top() << endl;
+	std::cout << "Top element:    " << stack->top() << std::endl;
 	while (stack->empty() == false) {
-		cout << "Next element:   " << stack->pop() << endl;
+		std::cout << "Next element:   " << stack->pop() << std::endl;
 	}
-	cout << "Stack is empty?  " << stack->empty() << endl;
+	std::cout << "Stack is empty?  " << stack->empty() << std::endl;
 
 	delete stack;
+
+
 }
 
