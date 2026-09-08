@@ -19,10 +19,10 @@ class Stack {
 
 	bool empty() { return counter_ == 0; }
 	Object top() { return array_[counter_ - 1]; }
-	Object pop() {  Object topValue = array_[counter_ - 1];
-					array_[counter_ - 1] = Object();
-					counter_--;
-					return topValue; }
+	Object pop() {  Object topValue = array_[counter_ - 1]; //Gemmer top element
+					array_[counter_ - 1] = Object();		//Sletter det
+					counter_--;								//Dekrementer counter
+					return topValue; }						//Returner det element der blev poppet
 
 	void push(const Object x) {
 		if (counter_ == capacity_) {				//Tjek om kapacitet er nået
