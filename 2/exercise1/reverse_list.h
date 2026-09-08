@@ -5,14 +5,19 @@
 #include <iostream>
 #include <vector>
 
-LinkedList reverse_list(LinkedList l) {
+void reverse_list(LinkedList& l) {
 	if (l.get_size() <= 0) {
 		std::cout << "List empty!" << std::endl;
-		return false;
+		return;
 	}
 	if (l.get_size() == 1) {
-		return l;
+		return;
 	}
 
+	std::vector<int> v;
+
+	while (l.get_size() > 0) {
+		
+	}
 
 }

@@ -17,8 +17,8 @@ class Stack {
 
 	~Stack() { delete[] array_; }
 
-	bool empty() { return counter_ == 0; };
-	Object top() { return array_[counter_ - 1] };
+	bool empty() { return counter_ == 0; }
+	Object top() { return array_[counter_ - 1]; }
 	Object pop() {  Object topValue = array_[counter_ - 1];
 					array_[counter_ - 1] = Object();
 					counter_--;
