@@ -2,6 +2,7 @@
 #define _QUEUE_H_
 
 #include "double_list.h"
+#include "stack_class.h"
 
 template <typename Object>
 class Queue {

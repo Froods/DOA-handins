@@ -1,4 +1,5 @@
 #include "linkedList.h"
+#include "reverse_list.h"
 #include <iostream>
 
 int main() {
@@ -32,6 +33,16 @@ int main() {
 	l.print();
 
 	l.remove_at(2);
+
+	l.print();
+
+	l.push_back(3);
+	l.push_back(4);
+	l.push_back(5);
+
+	l.print();
+
+	reverse_list(l);
 
 	l.print();
 
