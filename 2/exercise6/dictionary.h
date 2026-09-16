@@ -76,17 +76,3 @@ public:
     }
 };
 
-unsigned int hashFunction(const std::string& key) {
-    unsigned int sum = 0;
-    for (char c : key) {
-        sum += static_cast<int>(c);
-    }
-    return sum;
-}
-
-unsigned int M;
-unsigned int hashToArray(const std::string& key)
-{
-    return hashFunction(key) % M;
-}
-
