@@ -14,8 +14,8 @@ class LinkedList {
 	int remove_at(int index);
 
 	int get_size();
-	Node get_head();
-	Node get_tail();
+	Node* get_head() const;
+	Node* get_tail() const;
 
 	bool exists(int val);
 

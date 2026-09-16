@@ -156,16 +156,16 @@ void LinkedList::print() {
 	std::cout << std::endl;
 }
 
-Node LinkedList::get_head() {
-	return *head_;
+Node* LinkedList::get_head() const {
+	return head_;
 }
 
 int LinkedList::get_size() {
 	return size_;
 }
 
-Node LinkedList::get_tail() {
-	return *tail_;
+Node* LinkedList::get_tail() const {
+	return tail_;
 }
 
 bool LinkedList::exists(int val) {
