@@ -92,7 +92,7 @@ template <typename T>
 void Set<T>::display()
 {
     std::cout << "Values of set: " << std::endl;
-   for (int i = 0; i < size_; i++) {
+    for (int i = 0; i < size_; i++) {
     auto val = queue_.front();
 
     std::cout << "{" << val << "}, ";

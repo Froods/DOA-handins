@@ -1,51 +1,45 @@
-#include "linkedList.h"
+#include "simple_list.h"
 #include "reverse_list.h"
 #include <iostream>
 
 int main() {
-	LinkedList l(1);
+	List<int> l;
+
+	// Push back/front
+	std::cout << "Push back/front:\n";
 	l.push_back(2);
+	l.push_front(1);
 	l.push_back(3);
-
 	l.print();
 
+	// Pop back/front
+	std::cout << "\nPop back/front:\n";
 	l.pop_back();
-
-	l.push_front(4);
-
+	l.pop_front();
 	l.print();
 
+	// Check for value:
+	std::cout << "\nCheck for value:\n";
+	l.push_front(1);
 	l.push_back(3);
+	l.print();
+	std::cout << (l.exists(3) ? "Number 3 is in list" : "number 3 isn't in list") << std::endl;
+	std::cout << (l.exists(5) ? "Number 5 is in list" : "number 5 isn't in list") << std::endl;
 
-	l.insert_at(10,2);
-
-	std::cout << l.exists(3) << std::endl;
-	std::cout << l.exists(5) << std::endl;
-
+	// Remove at index:
+	std::cout << "\nRemove at index:\n";
+	l.remove_at(1);
 	l.print();
 
-	l.remove_at(2);
-
+	// Insert at index:
+	std::cout << "\nInsert at index:\n";
+	l.insert_at(2,1);
 	l.print();
 
-	l.remove_at(0);
-
-	l.print();
-
-	l.remove_at(2);
-
-	l.print();
-
-	l.push_back(3);
-	l.push_back(4);
-	l.push_back(5);
-
-	l.print();
-
+	// Reverse list:
+	std::cout << "\nReverse list:\n";
 	reverse_list(l);
-
 	l.print();
-
 
 	return 0;
 }
