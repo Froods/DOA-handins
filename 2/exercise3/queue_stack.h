@@ -10,7 +10,7 @@ class QueueStack
 {
 private:
 	Stack<Object> out; // front of the queue is on top - data is read from here
-	Stack<Object> in;  // in is only used in put() method
+	Stack<Object> in;  // 'in' is only used in put() method
 
 public:
 	bool empty() { return out.empty(); }
