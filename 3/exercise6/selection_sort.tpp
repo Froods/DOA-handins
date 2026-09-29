@@ -11,7 +11,7 @@ void selectionSort(std::vector<Object>& a){
 		for (int j = i+1; j < a.size(); j++){	  //Inner loop finds the smallest item on each iteration of the vector starting 1 past the previous replacement index
 			if(a[j] < a[smallest]) smallest = j;
 		}
-		std::swap(a[i],a[smallest]);			  //After each inner loop the smallest item is swapped with the current index in the vector
+		if(smallest != i) std::swap(a[i],a[smallest]);			  //After each inner loop the smallest item is swapped with the current index in the vector
 	}
 
 }
