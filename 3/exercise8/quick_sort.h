@@ -6,12 +6,18 @@
  * Then compute partition, restore the pivot and return its position.
  */
 #include <vector>
+#include <cassert>
 using namespace std;
 
 const int useInsertion = 16;
 
 template <typename Comparable>
 int partition(vector<Comparable>& a, int left, int right) {
+	// Assertions
+	assert(left >= 0);                  // left should be a valid index.
+	assert(right < (int)a.size());      // right should be insside the index range of the array.
+	assert(right - left >= 2);          // Make sure there are at least three elements in array to create partition.
+
 	int center = (left + right) / 2;
 
 	if (a[center] < a[left])
@@ -42,7 +48,16 @@ int partition(vector<Comparable>& a, int left, int right) {
 // Insertion sort
 template <typename Comparable>
 void insertionSort(vector<Comparable>& a, int left, int right) {
-	if (left == right) return;
+	// - Assertions
+	assert(left >= 0);                  // left should be a valid index.
+	assert(right < (int)a.size());      // right should be insside the index range of the array.
+	assert(left <= right + 1);          // Code handles empty arrays gracefully already 
+	                                    // (does nothing to them so prorgram wont crash).
+								        // if left == right + 1 (0,-1), then the array is empty.
+	
+	// - Edge cases
+	if (left == right) return;          // If array size is 1, simply return
+	// If only two elements are in array
 	if (left == right-1 && a[left] > a[right]) {
 		Comparable temp = a[right];
 		a[right] = a[left];
@@ -50,21 +65,28 @@ void insertionSort(vector<Comparable>& a, int left, int right) {
 		return;
 	}
 
-	int cur = left+1;
-	int count = 0;
+	// - Algorithm
+	int cur = left+1;                    // Start at index after first index
+	int count = 0;                       // init counter for backtracking
 	while (cur <= right) {
+		// if element before current element is smaller, go forward
 		if (a[cur-1] <= a[cur]) {
 			cur++;
 			continue;
 		}
 
-		Comparable temp = a[cur];
+		Comparable temp = a[cur];        // Placeholder for current value
+		// If element before current is bigger them swap them.
+		// Here the count variable is used to go back through 
+		// the array, to check the elements that came before 
+		// the element that came before the current element.
 		while (cur-count-1 >= left && a[cur-count-1] > a[cur-count]) {
 			a[cur-count] = a[cur-count-1];
 			a[cur-count-1] = temp;
 			count++;
 		}
 
+		// Go to next element and reset count
 		cur++;
 		count = 0;
 	}
@@ -78,13 +100,23 @@ void insertionSort(vector<Comparable>& a, int left, int right) {
  */
 template <typename Comparable>
 void quickSort(vector<Comparable>& a, int left, int right) {
+	// - Assertions
+	assert(left >= 0);                  // left should be a valid index.
+	assert(right < (int)a.size());      // right should be insside the index range of the array.
+	assert(left <= right + 1);          // Code handles empty arrays gracefully already 
+	                                    // (does nothing to them so prorgram wont crash).
+								        // if left == right + 1 (0,-1), then the array is empty.
+
+	// - Case: insertionSort
 	if (right - left <= useInsertion) {
 		insertionSort(a,left,right);
 		return;
 	}
-	int i = partition(a, left, right);
-	quickSort(a, left, i - 1);	// Sort small elements
-	quickSort(a, i + 1, right);	// Sort large elements
+
+	// - Case: quickSort
+	int i = partition(a, left, right);  // Create partitions for next quicksort recursion
+	quickSort(a, left, i - 1);	        // Sort small elements
+	quickSort(a, i + 1, right);	        // Sort large elements
 }
 
 /**
