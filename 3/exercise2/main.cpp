@@ -7,10 +7,10 @@ void printLine(int count){  //Funktion der printer den enkelte linje for trekant
 
 void triangle(int m, int n){
 
-    if (m <= n) {
-		printLine(m);
-		triangle(m+1, n);
-		printLine(m);
+    if (m <= n) {           //For m mindre eller lig med n skal der tegnes
+		printLine(m);       //Winding inden recursion kald
+		triangle(m+1, n);   //Recursive kald som fortsætter indtil if statement er false
+		printLine(m);       //Unwinding af recursion kald
 	}
 
 }
@@ -18,7 +18,6 @@ void triangle(int m, int n){
 int main(){
 
     triangle(4,6);
-
 
     return 0;
 }
