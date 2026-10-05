@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 
+//Counting sort function written after the Wikipedia template
 std::vector<int> counting_sort(std::vector<int> A, int k)
 {
     std::vector<int> count(k + 1, 0);
@@ -26,11 +27,12 @@ std::vector<int> counting_sort(std::vector<int> A, int k)
     return output;
 }
 
+//Testing in main
 int main()
 {
-    std::vector<int> test{0,2,5,5,7,2,0};
+    std::vector<int> test{0,2,5,5,7,2,0}; //Test vector
 
-    std::vector<int> after_count = counting_sort(test, test.size());
+    std::vector<int> after_count = counting_sort(test, test.size()); //Vector after running function
 
     std::cout << "Before counting sort function: \n";
 
@@ -39,7 +41,7 @@ int main()
     }
 
     std::cout << "\nAfter counting sort function: \n";
-    
+
     for (auto x : after_count) {
         std::cout << x << ", ";
     }
