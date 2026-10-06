@@ -19,7 +19,7 @@ struct Node
 	Node(T value)
 	{
 		data = value;
-		left = right = nullptr;
+		parent = left = right = nullptr;
 	}
 };
 
@@ -46,11 +46,9 @@ private:
 
 		//Get binary number of position for next node
 		//Using the binary we can decipher the path to reach the empty position where the insertion happens
-		std::string binary_path = std::bitset<32>(size+1).to_string();
-		
+		std::string binary_path = std::bitset<32>(size).to_string();
 		// Remove trailing zeroes
 		binary_path = binary_path.substr(binary_path.find('1') == std::string::npos ? 31 : binary_path.find('1'));
-		
 		
 		// Decipher the binary path to reach the posittion 
 		// for the next node to be inserted.
@@ -58,20 +56,21 @@ private:
 		// 0 = left
 		// 1 = right
 		Node<T>* curNode = root;
-		for (int i = 1; i < binary_path.size(); i++){
-			if (binary_path[i] == 0) {
+		for (std::size_t i = 1; i < binary_path.size(); i++){
+			if (binary_path[i] == '0') {
 				curNode = curNode->left;
 			} else {
 				curNode = curNode->right;
 			}
 		}
-		curNode = new Node<T>(x);
+		(curNode->left == nullptr) ? curNode->left = new Node(x) : curNode->right = new Node(x);
 
 		//Percolate up to maintain the min-heap property
 		//Comparing the data of our current node to the data of the parent
 		//For every instance where it's smaller the data is swapped keeping the nodes intact
-		while (curNode < curNode->parent){
+		while (curNode->data < curNode->parent->data){
 			std::swap(curNode->data, curNode->parent->data);
+			curNode = curNode->parent;
 		}
 		size++;
 
