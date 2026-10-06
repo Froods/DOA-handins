@@ -40,6 +40,7 @@ private:
 		if (size == 0)
 		{
 			root = new Node<T>(x);
+			root->parent = nullptr;
 			size++;
 			return;
 		}
@@ -63,12 +64,19 @@ private:
 				curNode = curNode->right;
 			}
 		}
-		(curNode->left == nullptr) ? curNode->left = new Node(x) : curNode->right = new Node(x);
+		if (curNode->left == nullptr) {
+			curNode->left = new Node(x);
+			curNode->left->parent = curNode;
+		} else {
+			curNode->right = new Node(x);
+			curNode->right->parent = curNode;
+		}
 
 		//Percolate up to maintain the min-heap property
 		//Comparing the data of our current node to the data of the parent
 		//For every instance where it's smaller the data is swapped keeping the nodes intact
 		while (curNode->data < curNode->parent->data){
+			if (curNode->parent == nullptr) break;
 			std::swap(curNode->data, curNode->parent->data);
 			curNode = curNode->parent;
 		}
