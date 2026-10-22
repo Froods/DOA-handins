@@ -179,9 +179,8 @@ class BinarySearchTree {
 			return node != it.node;
 		}
 
-		// Prefix
+		//Prefix implementaton of ++ operator
 		iterator& operator ++() {
-			// TO BE IMPLEMENTED
 			if (node == nullptr) return *this;
 
 			if (node->right != nullptr) { //Going to the right node if it exists
@@ -202,7 +201,6 @@ class BinarySearchTree {
 			return *this; //Returning iterator with the updated node
 		}
 
-		// Postfix
 		iterator operator ++(int) {
 			iterator it(*this);
 			++(*this);
