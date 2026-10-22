@@ -8,41 +8,18 @@ using namespace std;
 
 template<typename Comparable>
 class BinarySearchTree {
-  public:
-	BinarySearchTree() : root {nullptr} {}
+  private:
+	struct BinaryNode {
+		Comparable element;
+		BinaryNode *left;
+		BinaryNode *right;
+		BinaryNode *parent;
 
-	BinarySearchTree(const BinarySearchTree& rhs) : root {nullptr} {
-		root = clone(rhs.root);
-	}
+		BinaryNode(const Comparable& theElement, BinaryNode* lt, BinaryNode* rt, BinaryNode* p) :
+			element {theElement}, left {lt}, right {rt}, parent(p) { }
+	};
 
-	~BinarySearchTree() { makeEmpty(); }
-
-	BinarySearchTree& operator=(const BinarySearchTree& rhs) {
-		BinarySearchTree copy(rhs);
-		std::swap(*this, copy);
-		return *this;
-	}
-
-    const Comparable& findMin() const; // find min element
-    const Comparable& findMax() const; // find max element
-    bool isEmpty() const; // test for emptiness
-    void printTree(ostream& out = cout) const;
-    void makeEmpty(); // empty tree
-    void insert(const Comparable& x); // insert item
-	bool contains(const Comparable& x) const; // look for item
-    void remove(const Comparable& x); // remove item
-
-private:
-  struct BinaryNode {
-	  Comparable element;
-	  BinaryNode *left;
-	  BinaryNode *right;
-
-	  BinaryNode(const Comparable& theElement, BinaryNode* lt, BinaryNode* rt) :
-	  	  element {theElement}, left {lt}, right {rt} { }
-  	};
-
-  	BinaryNode *root;
+	BinaryNode *root;
 
 	/**
      * Internal method to insert into a subtree.
@@ -50,15 +27,18 @@ private:
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-	void insert(const Comparable& x, BinaryNode* &t) {
-		if (t == nullptr)
-			t = new BinaryNode{x, nullptr, nullptr};
-		else {
+	BinaryNode *insert(const Comparable& x, BinaryNode* &t, BinaryNode* parent) {
+		if (t == nullptr) {
+			t = new BinaryNode{x, nullptr, nullptr, parent};
+			return t;
+		} else {
 			if (x < t->element)
-				insert(x, t->left);
+				return insert(x, t->left, t);
 			else if (t->element < x)
-				insert(x, t->right);
-			else; // Duplicate; do nothing
+				return insert(x, t->right, t);
+			else {
+				return t;
+			}
 		}
 	}
 
@@ -80,8 +60,15 @@ private:
 			t->element = findMin(t->right)->element;
 			remove(t->element, t->right);
 		} else {
-			BinaryNode*oldNode = t;
-			t = (t->left != nullptr) ? t->left : t->right;
+			BinaryNode* oldNode = t;
+			BinaryNode *p = t->parent;
+			if (t->left != nullptr) {
+				t = t->left;
+			} else {
+				t = t->right;
+			}
+			if (t != nullptr)
+				t->parent = p;
 			delete oldNode;
 		}
 	}
@@ -114,15 +101,15 @@ private:
      * x is item to search for.
      * t is the node that roots the subtree.
      */
-	bool contains(const Comparable& x, BinaryNode* t) const {
+	BinaryNode *contains(const Comparable& x, BinaryNode* t) const {
 		if (t == nullptr)
-			return false;
+			return nullptr;
 		else if (x < t->element)
 			return contains(x, t->left);
 		else if (t->element < x)
 			return contains(x, t->right);
 		else
-			return true;	// Match
+			return t;	// Match
 	}
 
 	/**
@@ -143,7 +130,7 @@ private:
 	void printTree(BinaryNode* t, ostream & out) const {
 		if (t != nullptr) {
 			printTree(t->left, out);
-			out << t->element << endl;
+			std::cout << t->element << std::endl;
 			printTree(t->right, out);
 		}
 	}
@@ -155,8 +142,97 @@ private:
 		if (t == nullptr)
 			return nullptr;
 		else
-			return new BinaryNode{t->element, clone(t->left), clone(t->right)};
+			return new BinaryNode{t->element, clone(t->left), clone(t->right), t};
 	}
+
+  public:
+	BinarySearchTree() : root {nullptr} {}
+
+	BinarySearchTree(const BinarySearchTree& rhs) : root {nullptr} {
+		root = clone(rhs.root);
+	}
+
+	~BinarySearchTree() { makeEmpty(); }
+
+	BinarySearchTree& operator=(const BinarySearchTree& rhs) {
+		BinarySearchTree copy(rhs);
+		std::swap(*this, copy);
+		return *this;
+	}
+
+	class iterator {
+	private:
+		BinaryNode *node;
+
+	public:
+		friend class BinarySearchTree<Comparable>;
+
+		iterator() : node(nullptr) {}
+
+		iterator(BinaryNode *newNode) : node(newNode) {}
+
+		bool operator ==(iterator it) const {
+			return node == it.node;
+		}
+
+		bool operator !=(iterator it) const {
+			return node != it.node;
+		}
+
+		// Prefix
+		iterator& operator ++() {
+			// TO BE IMPLEMENTED
+			if (node == nullptr) return *this;
+
+			if (node->right != nullptr) { //Going to the right node if it exists
+				node = node->right;
+				while (node->left != nullptr) {
+					node = node->left; //Finding the next larger element by going the the far left in the BST
+				}
+			}
+
+			else //If a right node doesn't exist
+			{
+				while (node->parent != nullptr && node->element > node->parent->element){
+				node = node->parent; //Going up in the BST to find the next larger element
+				}
+				node = node->parent; //Setting the current node to the parent, which will be the next larger element
+			}
+			
+			return *this; //Returning iterator with the updated node
+		}
+
+		// Postfix
+		iterator operator ++(int) {
+			iterator it(*this);
+			++(*this);
+			return it;
+		}
+
+		Comparable& operator*() {
+			return node->element;
+		}
+
+		Comparable *operator->() {
+			return& node->element;
+		}
+
+		iterator& operator=(iterator it) {
+			node = it.node;
+			return *this;
+		}
+	};
+
+	const iterator findMin() const;
+	const iterator findMax() const;
+	bool isEmpty() const; // test for emptiness
+	void printTree(ostream& out = cout) const;
+	void makeEmpty(); // empty tree
+	bool contains(const Comparable& x) const; // look for item
+	void remove(const Comparable& x); // remove item
+	iterator insert(const Comparable& x); // insert item
+	iterator find(const Comparable& x); // insert item
+	iterator erase(iterator& itr);
 };
 
 #include "binary_search_tree.tpp"
